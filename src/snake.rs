@@ -51,15 +51,6 @@ impl Component for SnakeHead {
     type Storage = DenseVecStorage<Self>;
 }
 
-pub struct SnakeTail {
-    pub size: f32,
-    pub velocity: f32,
-}
-
-impl Component for SnakeTail {
-    type Storage = DenseVecStorage<Self>;
-}
-
 //////////////////////////////
 // Initialisation Functions //
 //////////////////////////////
@@ -87,8 +78,8 @@ fn initialise_snake(world: &mut World) {
 
     let mut head_transform = Transform::default();
 
-    let x = ARENA_WIDTH - SNAKE_HEAD_SIZE;
-    let y = ARENA_HEIGHT - SNAKE_HEAD_SIZE;
+    let x = (ARENA_WIDTH - SNAKE_HEAD_SIZE) / 2.0;
+    let y = (ARENA_HEIGHT - SNAKE_HEAD_SIZE) / 2.0;
     head_transform.translation = Vector3::new(x, y, 0.0);
 
     let mesh = create_mesh(world, generate_rectangle_vertices(0.0, 0.0, SNAKE_HEAD_SIZE, SNAKE_HEAD_SIZE));
