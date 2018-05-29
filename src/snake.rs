@@ -15,8 +15,11 @@ use {ARENA_HEIGHT, ARENA_WIDTH};
 impl<'a, 'b> State<GameData<'a, 'b>> for Snake {
     fn on_start(&mut self, state: StateData<GameData>) {
         state.world.register::<SnakeHead>();
+        state.world.register::<Food>();
+
         initialise_camera(state.world);
         initialise_snake(state.world);
+        initialise_food(state.world);
     }
 
     fn handle_event(&mut self, _: StateData<GameData>, event: Event) -> Trans<GameData<'a, 'b>> {
@@ -42,6 +45,10 @@ impl<'a, 'b> State<GameData<'a, 'b>> for Snake {
     }
 }
 
+///////////////////
+// Game Entities //
+///////////////////
+
 #[derive(Debug)]
 pub struct SnakeHead {
     pub size: f32,
@@ -61,6 +68,13 @@ impl SnakeHead {
             velocity: (0.0, SNAKE_VELOCITY),
         }
     }
+}
+
+#[derive(Debug)]
+pub struct Food {}
+
+impl Component for Food {
+    type Storage = DenseVecStorage<Self>;
 }
 
 //////////////////////////////
@@ -104,6 +118,30 @@ fn initialise_snake(world: &mut World) {
         .with(material)
         .with(SnakeHead::new())
         .with(head_transform)
+        .with(GlobalTransform::default())
+        .build();
+}
+
+// Initialises food, placing it in the field
+fn initialise_food(world: &mut World) {
+    use {FOOD_SIZE, FOOD_COLOR};
+
+    let mut transform = Transform::default();
+
+    let x = (ARENA_WIDTH - FOOD_SIZE) / 1.5;
+    let y = (ARENA_HEIGHT - FOOD_SIZE) / 1.5;
+    transform.translation = Vector3::new(x, y, 0.0);
+
+    let mesh = create_mesh(world, generate_rectangle_vertices(0.0, 0.0, FOOD_SIZE, FOOD_SIZE));
+    let material = create_color_material(world, FOOD_COLOR);
+
+    // create snake head entity
+    world
+        .create_entity()
+        .with(mesh)
+        .with(material)
+        .with(Food{})
+        .with(transform)
         .with(GlobalTransform::default())
         .build();
 }

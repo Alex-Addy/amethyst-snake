@@ -14,7 +14,10 @@ const ARENA_WIDTH: f32 = 100.0;
 const SNAKE_HEAD_SIZE: f32 = 5.0;
 const SNAKE_VELOCITY: f32 = 10.0;
 
-const SNAKE_COLOR: [f32; 4] = [0.0, 0.0, 1.0, 1.0];
+const FOOD_SIZE: f32 = 4.0;
+
+const FOOD_COLOR: [f32; 4] = [1.0, 0.0, 0.0, 1.0];
+const SNAKE_COLOR: [f32; 4] = [0.0, 1.0, 0.0, 1.0];
 const BACKGROUND_COLOR: [f32; 4] = [0.0, 0.0, 0.0, 1.0];
 
 fn run() -> Result<(), amethyst::Error> {
