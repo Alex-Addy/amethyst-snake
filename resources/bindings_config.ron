@@ -1,7 +1,13 @@
 (
     axes: {
-        "left_paddle": (pos: Key(W), neg: Key(S)),
-        "right_paddle": (pos: Key(Up), neg: Key(Down)),
+        "move_x": (
+		pos: Key(D),
+		 neg: Key(A),
+	),
+        "move_y": (
+		pos: Key(W),
+		neg: Key(S),
+	),
     },
     actions: {},
 )

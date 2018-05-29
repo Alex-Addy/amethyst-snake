@@ -42,13 +42,25 @@ impl<'a, 'b> State<GameData<'a, 'b>> for Snake {
     }
 }
 
+#[derive(Debug)]
 pub struct SnakeHead {
     pub size: f32,
-    pub velocity: f32,
+    pub velocity: (f32, f32),
 }
 
 impl Component for SnakeHead {
     type Storage = DenseVecStorage<Self>;
+}
+
+impl SnakeHead {
+    pub fn new() -> SnakeHead {
+        use {SNAKE_VELOCITY, SNAKE_HEAD_SIZE};
+
+        SnakeHead {
+            size: SNAKE_HEAD_SIZE,
+            velocity: (0.0, SNAKE_VELOCITY),
+        }
+    }
 }
 
 //////////////////////////////
@@ -74,7 +86,7 @@ fn initialise_camera(world: &mut World) {
 
 /// Initialises snake placing head in the middle
 fn initialise_snake(world: &mut World) {
-    use {SNAKE_COLOR, SNAKE_HEAD_SIZE, SNAKE_VELOCITY};
+    use {SNAKE_COLOR, SNAKE_HEAD_SIZE};
 
     let mut head_transform = Transform::default();
 
@@ -90,10 +102,7 @@ fn initialise_snake(world: &mut World) {
         .create_entity()
         .with(mesh)
         .with(material)
-        .with(SnakeHead {
-            size: SNAKE_HEAD_SIZE,
-            velocity: SNAKE_VELOCITY,
-        })
+        .with(SnakeHead::new())
         .with(head_transform)
         .with(GlobalTransform::default())
         .build();
