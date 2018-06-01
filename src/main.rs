@@ -1,4 +1,5 @@
 extern crate amethyst;
+extern crate rand;
 
 use amethyst::prelude::*;
 use amethyst::core::transform::TransformBundle;
@@ -12,7 +13,7 @@ const ARENA_HEIGHT: f32 = 100.0;
 const ARENA_WIDTH: f32 = 100.0;
 
 const SNAKE_HEAD_SIZE: f32 = 5.0;
-const SNAKE_VELOCITY: f32 = 10.0;
+const SNAKE_VELOCITY: f32 = 20.0;
 
 const FOOD_SIZE: f32 = 4.0;
 
@@ -42,6 +43,8 @@ fn run() -> Result<(), amethyst::Error> {
         .with_bundle(input_bundle)?
         .with(systems::MovementSystem, "movement_system", &[])
         .with(systems::ControlSystem, "control_system", &[])
+        .with(systems::CollisionSystem, "collision_system", &["movement_system"])
+        .with(systems::FoodSystem, "food_system", &["movement_system"])
     ;
     let mut game = Application::<GameData>::new("./", snake::Snake, game_data)?;
 

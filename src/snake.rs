@@ -71,7 +71,9 @@ impl SnakeHead {
 }
 
 #[derive(Debug)]
-pub struct Food {}
+pub struct Food {
+    pub size: f32,
+}
 
 impl Component for Food {
     type Storage = DenseVecStorage<Self>;
@@ -140,7 +142,9 @@ fn initialise_food(world: &mut World) {
         .create_entity()
         .with(mesh)
         .with(material)
-        .with(Food{})
+        .with(Food{
+            size: FOOD_SIZE,
+        })
         .with(transform)
         .with(GlobalTransform::default())
         .build();
