@@ -1,9 +1,9 @@
 extern crate amethyst;
 extern crate rand;
 
-use amethyst::prelude::*;
 use amethyst::core::transform::TransformBundle;
-use amethyst::input::{InputBundle, Bindings};
+use amethyst::input::{Bindings, InputBundle};
+use amethyst::prelude::*;
 use amethyst::renderer::{DisplayConfig, DrawFlat, Pipeline, PosTex, RenderBundle, Stage};
 
 mod snake;
@@ -27,8 +27,8 @@ fn run() -> Result<(), amethyst::Error> {
 
     let config = DisplayConfig::load(&display_path);
 
-    let bindings = Bindings::load_no_fallback(binding_path)
-        .map_err(|e| amethyst::Error::Config(e))?;
+    let bindings =
+        Bindings::load_no_fallback(binding_path).map_err(|e| amethyst::Error::Config(e))?;
     let input_bundle = InputBundle::<String, String>::new().with_bindings(bindings);
 
     let pipe = Pipeline::build().with_stage(
@@ -43,9 +43,12 @@ fn run() -> Result<(), amethyst::Error> {
         .with_bundle(input_bundle)?
         .with(systems::MovementSystem, "movement_system", &[])
         .with(systems::ControlSystem, "control_system", &[])
-        .with(systems::CollisionSystem, "collision_system", &["movement_system"])
-        .with(systems::FoodSystem, "food_system", &["movement_system"])
-    ;
+        .with(
+            systems::CollisionSystem,
+            "collision_system",
+            &["movement_system"],
+        )
+        .with(systems::FoodSystem, "food_system", &["movement_system"]);
     let mut game = Application::<GameData>::new("./", snake::Snake, game_data)?;
 
     game.run();

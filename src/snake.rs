@@ -1,14 +1,13 @@
-
 pub struct Snake;
 
-use amethyst::prelude::*;
 use amethyst::assets::Loader;
 use amethyst::core::cgmath::Vector3;
 use amethyst::core::transform::{GlobalTransform, Transform};
 use amethyst::ecs::prelude::{Component, DenseVecStorage};
-use amethyst::{Trans, GameData, State, StateData};
-use amethyst::renderer::{KeyboardInput, WindowEvent, Event, VirtualKeyCode, Camera, Projection,
-            Material, MaterialDefaults, MeshHandle, PosTex};
+use amethyst::prelude::*;
+use amethyst::renderer::{Camera, Event, KeyboardInput, Material, MaterialDefaults, MeshHandle,
+                         PosTex, Projection, VirtualKeyCode, WindowEvent};
+use amethyst::{GameData, State, StateData, Trans};
 
 use {ARENA_HEIGHT, ARENA_WIDTH};
 
@@ -61,7 +60,7 @@ impl Component for SnakeHead {
 
 impl SnakeHead {
     pub fn new() -> SnakeHead {
-        use {SNAKE_VELOCITY, SNAKE_HEAD_SIZE};
+        use {SNAKE_HEAD_SIZE, SNAKE_VELOCITY};
 
         SnakeHead {
             size: SNAKE_HEAD_SIZE,
@@ -110,7 +109,10 @@ fn initialise_snake(world: &mut World) {
     let y = (ARENA_HEIGHT - SNAKE_HEAD_SIZE) / 2.0;
     head_transform.translation = Vector3::new(x, y, 0.0);
 
-    let mesh = create_mesh(world, generate_rectangle_vertices(0.0, 0.0, SNAKE_HEAD_SIZE, SNAKE_HEAD_SIZE));
+    let mesh = create_mesh(
+        world,
+        generate_rectangle_vertices(0.0, 0.0, SNAKE_HEAD_SIZE, SNAKE_HEAD_SIZE),
+    );
     let material = create_color_material(world, SNAKE_COLOR);
 
     // create snake head entity
@@ -126,7 +128,7 @@ fn initialise_snake(world: &mut World) {
 
 // Initialises food, placing it in the field
 fn initialise_food(world: &mut World) {
-    use {FOOD_SIZE, FOOD_COLOR};
+    use {FOOD_COLOR, FOOD_SIZE};
 
     let mut transform = Transform::default();
 
@@ -134,7 +136,10 @@ fn initialise_food(world: &mut World) {
     let y = (ARENA_HEIGHT - FOOD_SIZE) / 1.5;
     transform.translation = Vector3::new(x, y, 0.0);
 
-    let mesh = create_mesh(world, generate_rectangle_vertices(0.0, 0.0, FOOD_SIZE, FOOD_SIZE));
+    let mesh = create_mesh(
+        world,
+        generate_rectangle_vertices(0.0, 0.0, FOOD_SIZE, FOOD_SIZE),
+    );
     let material = create_color_material(world, FOOD_COLOR);
 
     // create snake head entity
@@ -142,9 +147,7 @@ fn initialise_food(world: &mut World) {
         .create_entity()
         .with(mesh)
         .with(material)
-        .with(Food{
-            size: FOOD_SIZE,
-        })
+        .with(Food { size: FOOD_SIZE })
         .with(transform)
         .with(GlobalTransform::default())
         .build();
@@ -200,4 +203,3 @@ fn create_color_material(world: &World, color: [f32; 4]) -> Material {
         ..mat_defaults.0.clone()
     }
 }
-

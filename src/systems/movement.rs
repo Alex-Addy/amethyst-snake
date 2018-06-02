@@ -1,9 +1,7 @@
-
-use snake::SnakeHead;
 use amethyst::core::timing::Time;
 use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{Join, Read, ReadStorage, System, WriteStorage};
-//use amethyst::input::InputHandler;
+use snake::SnakeHead;
 
 /// This system is responsible for moving the Snake according its velocity
 pub struct MovementSystem;

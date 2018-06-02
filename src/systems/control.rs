@@ -1,8 +1,7 @@
-
-use SNAKE_VELOCITY;
-use snake::SnakeHead;
 use amethyst::ecs::prelude::{Join, Read, System, WriteStorage};
 use amethyst::input::InputHandler;
+use snake::SnakeHead;
+use SNAKE_VELOCITY;
 
 /// This system is responsible for handling user inputs to change the Snake's velocity
 pub struct ControlSystem;
