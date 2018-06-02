@@ -1,6 +1,9 @@
 extern crate amethyst;
 extern crate rand;
 
+use std::time::Duration;
+
+use amethyst::core::frame_limiter::FrameRateLimitStrategy;
 use amethyst::core::transform::TransformBundle;
 use amethyst::input::{Bindings, InputBundle};
 use amethyst::prelude::*;
@@ -49,7 +52,12 @@ fn run() -> Result<(), amethyst::Error> {
             &["movement_system"],
         )
         .with(systems::FoodSystem, "food_system", &["movement_system"]);
-    let mut game = Application::<GameData>::new("./", snake::Snake, game_data)?;
+    let mut game = Application::build("./", snake::Snake)?
+        .with_frame_limit(
+            FrameRateLimitStrategy::SleepAndYield(Duration::from_millis(2)),
+            144,
+        )
+        .build(game_data)?;
 
     game.run();
 
